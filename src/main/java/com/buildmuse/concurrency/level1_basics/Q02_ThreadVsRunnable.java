@@ -26,7 +26,9 @@ public class Q02_ThreadVsRunnable {
     public static void main(String[] args) throws InterruptedException {
         
         // TODO: Create Runnable for even numbers (2, 4, 6, 8, 10)
-        Runnable evenTask = null; // Use lambda
+        Runnable evenTask = () -> {
+            for(int i = )
+        };
         
         
         // TODO: Create Runnable for odd numbers (1, 3, 5, 7, 9)

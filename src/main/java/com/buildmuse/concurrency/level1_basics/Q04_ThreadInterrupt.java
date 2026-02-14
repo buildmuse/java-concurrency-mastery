@@ -49,7 +49,7 @@ public class Q04_ThreadInterrupt {
                 }
             }
             
-            System.out.println("Worker: Exited gracefully");
+            //System.out.println("Worker: Exited gracefully");
         });
         
         worker.start();

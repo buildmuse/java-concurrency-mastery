@@ -27,12 +27,12 @@ public class Q01_WaitNotifyBasics {
         Thread thread1 = new Thread(() -> {
             synchronized (lock) {
                 System.out.println("Thread-1: Waiting for signal...");
-                try {
-                    // TODO: Call wait() on lock object
-                    
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+//                try {
+//                    // TODO: Call wait() on lock object
+//
+//                } catch (InterruptedException e) {
+//                    Thread.currentThread().interrupt();
+//                }
                 System.out.println("Thread-1: Received signal, proceeding");
             }
         }, "Thread-1");
