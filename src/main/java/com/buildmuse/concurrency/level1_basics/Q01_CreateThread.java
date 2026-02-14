@@ -27,6 +27,17 @@ public class Q01_CreateThread {
         // TODO: Override run() method
         // Print "Worker: {number}" for 1 to 5
         // Sleep 500ms between each print
+        @Override
+        public void run() {
+            for(int i = 1; i <= 5;i++) {
+                System.out.println("Worker: " + i);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
         
     }
     
@@ -34,10 +45,11 @@ public class Q01_CreateThread {
         System.out.println("Main thread: Starting worker thread");
         
         // TODO: Create and start WorkerThread
-        
+        WorkerThread worker1 = new WorkerThread();
+        worker1.start();
         
         // TODO: Wait for worker to complete using join()
-        
+        worker1.join();
         
         System.out.println("Main thread: Worker completed");
     }

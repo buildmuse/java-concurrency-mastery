@@ -51,7 +51,7 @@ public class Q02_CallableAndFuture {
         for (int i = 0; i < futures.size(); i++) {
             // TODO: Use future.get() to retrieve result (blocks if not ready)
             
-            System.out.println("Result from task " + (i + 1) + ": " + /* result */);
+            System.out.println("Result from task " + (i + 1) + ": " + "TODO" /* result */ );
         }
         
         executor.shutdown();

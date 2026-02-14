@@ -49,7 +49,7 @@ public class Q01_BlockingQueue {
                 for (int i = 1; i <= 10; i++) {
                     // TODO: Use queue.take() - blocks if queue is empty
                     
-                    System.out.println("Consumer: Consumed " + /* item */);
+                    System.out.println("Consumer: Consumed " + "TODO" /* item */);
                     Thread.sleep(300);
                 }
             } catch (InterruptedException e) {

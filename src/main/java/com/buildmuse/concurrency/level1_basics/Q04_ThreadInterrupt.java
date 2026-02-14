@@ -35,7 +35,7 @@ public class Q04_ThreadInterrupt {
             // When interrupted, print cleanup message and exit
             
             int iteration = 0;
-            while (/* TODO: check if not interrupted */) {
+            while (true /* TODO: check if not interrupted */) {
                 iteration++;
                 System.out.println("Worker: Iteration " + iteration);
                 
