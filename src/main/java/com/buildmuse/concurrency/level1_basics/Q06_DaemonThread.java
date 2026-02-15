@@ -41,13 +41,22 @@ public class Q06_DaemonThread {
         // TODO: Create daemon thread that runs indefinitely
         // Print "Daemon thread: Iteration X" every 500ms
         Thread daemonThread = new Thread(() -> {
-            // TODO: Implement infinite loop
-            
+            int i = 1;
+            while(true) {
+               System.out.println("Daemon thread: Iteration "+ i++);
+
+               try {
+                   Thread.sleep(500);
+               } catch (InterruptedException e) {
+                   Thread.currentThread().interrupt();
+               }
+            }
+
         });
-        
+
         // TODO: Set daemonThread as daemon (MUST be done before start())
         
-        
+        daemonThread.setDaemon(true);
         userThread.start();
         daemonThread.start();
         

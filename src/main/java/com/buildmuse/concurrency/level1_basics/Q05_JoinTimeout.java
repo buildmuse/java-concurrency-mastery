@@ -38,11 +38,14 @@ public class Q05_JoinTimeout {
         System.out.println("Main: Waiting max 2 seconds for worker");
         
         // TODO: Wait for worker with 2-second timeout
-        
+        worker.join(2000);
         
         // TODO: Check if worker is still alive
         // If alive, interrupt it
-        
+        if(worker.isAlive()){
+            System.out.println("Main: Worker didn't finish in time, interrupting");
+            worker.interrupt();
+        }
         
         System.out.println("Main: Done");
     }

@@ -36,26 +36,27 @@ public class Q03_ThreadLifecycle {
             System.out.println("Worker: Work completed");
         });
         
-        // TODO: Print state after creation (should be NEW)
-        System.out.println("State after creation: " + "TODO");
+
+        System.out.println("State after creation: " + worker.getState());
         
         // TODO: Start the thread
-        
+        worker.start();
         
         // TODO: Print state after start (should be RUNNABLE)
-        System.out.println("State after start: " + "TODO");
+        System.out.println("State after start: " + worker.getState());
         
         // Give thread time to start sleeping
         Thread.sleep(500);
         
         // TODO: Print state while sleeping (should be TIMED_WAITING)
-        System.out.println("State while sleeping: " + "TODO");
+        System.out.println("State while sleeping: " + worker.getState());
         
         // TODO: Wait for thread to complete
-        
+
+        worker.join();
         
         // TODO: Print state after completion (should be TERMINATED)
-        System.out.println("State after completion: " + "TODO");
+        System.out.println("State after completion: " + worker.getState());
     }
 }
 

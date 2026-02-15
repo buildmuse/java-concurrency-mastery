@@ -27,21 +27,44 @@ public class Q02_ThreadVsRunnable {
         
         // TODO: Create Runnable for even numbers (2, 4, 6, 8, 10)
         Runnable evenTask = () -> {
-            for(int i = )
+            for(int i = 2; i <= 10; i += 2) {
+                System.out.println("Even: " + i);
+            }
+            try{
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         };
         
         
         // TODO: Create Runnable for odd numbers (1, 3, 5, 7, 9)
-        Runnable oddTask = null; // Use lambda
+        Runnable oddTask = () -> {
+            for(int i = 1; i <= 9; i += 2) {
+                System.out.println("Odd: " + i);
+            }
+
+            try{
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
         
         
         // TODO: Create Thread objects passing Runnable instances
+        Thread t1 = new Thread(evenTask);
+        Thread t2 = new Thread(oddTask);
         
         
-        // TODO: Start both threads
+        // TODO: Start both threads.
+        t1.start();
+        t2.start();
         
         
         // TODO: Wait for both to complete
+        t1.join();
+        t2.join();
         
         
         System.out.println("Both threads completed");

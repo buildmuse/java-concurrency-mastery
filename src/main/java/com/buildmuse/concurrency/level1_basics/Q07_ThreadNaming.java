@@ -32,28 +32,58 @@ public class Q07_ThreadNaming {
         // TODO: Create 3 threads with names "Worker-1", "Worker-2", "Worker-3"
         // Each should print its name and ID, then sleep 1 second
         
-        Thread worker1 = new Thread(() -> {
-            // TODO: Get current thread and print its name and ID
-            
+        Thread t1 = new Thread(() -> {
+            System.out.println(Thread.currentThread().getName() + ": Starting (ID: " + Thread.currentThread().getId() + ")");
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            // TODO: Print completion message with thread name
-            
         });
         
         // TODO: Set name for worker1
+
+        t1.setName("worker-1");
         
         
         // TODO: Create worker2 and worker3 similarly
+
+        Thread t2 = new Thread(() -> {
+            System.out.println(Thread.currentThread().getName() + ": Starting (ID: " + Thread.currentThread().getId() + ")");
+
+            try{
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }, "worker-2");
+
+        Thread t3 = new Thread(() -> {
+            System.out.println(Thread.currentThread().getName() + ": Starting (ID: " + Thread.currentThread().getId() + ")");
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        t3.setName("worker-3");
         
         
         // TODO: Start all workers
+
+        t1.start();
+        t2.start();
+        t3.start();
         
         
         // TODO: Wait for all to complete
+
+        t1.join();
+        t2.join();
+        t3.join();
         
     }
 }

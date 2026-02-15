@@ -35,7 +35,7 @@ public class Q04_ThreadInterrupt {
             // When interrupted, print cleanup message and exit
             
             int iteration = 0;
-            while (true /* TODO: check if not interrupted */) {
+            while (!Thread.currentThread().isInterrupted()) {
                 iteration++;
                 System.out.println("Worker: Iteration " + iteration);
                 
@@ -44,12 +44,15 @@ public class Q04_ThreadInterrupt {
                 } catch (InterruptedException e) {
                     // TODO: Handle interruption
                     // Print "Worker: Interrupted! Cleaning up..."
+                    Thread.currentThread().interrupt();
+                    System.out.println("Worker: Interrupted! Cleaning up...");
+                    break;
                     // Break the loop
                     
                 }
             }
             
-            //System.out.println("Worker: Exited gracefully");
+            System.out.println("Worker: Exited gracefully");
         });
         
         worker.start();
@@ -59,11 +62,11 @@ public class Q04_ThreadInterrupt {
         
         System.out.println("Main: Interrupting worker");
         // TODO: Interrupt the worker thread
-        
+        worker.interrupt();
         
         // TODO: Wait for worker to finish
         
-        
+        worker.join();
         System.out.println("Main: Worker stopped");
     }
 }

@@ -53,16 +53,23 @@ public class Q08_ThreadPriority {
         // highPriority = MAX_PRIORITY (10)
         // normalPriority = NORM_PRIORITY (5) - default
         // lowPriority = MIN_PRIORITY (1)
-        
+
+        highPriority.setPriority(Thread.MAX_PRIORITY);
+        normalPriority.setPriority(Thread.NORM_PRIORITY);
+        lowPriority.setPriority(Thread.MIN_PRIORITY);
         
         
         // TODO: Start all threads
         
-        
+        highPriority.start();
+        normalPriority.start();
+        lowPriority.start();
         
         // TODO: Wait for all to complete
         
-        
+        highPriority.join();
+        normalPriority.join();
+        lowPriority.join();
         
         System.out.println("All threads completed");
     }
