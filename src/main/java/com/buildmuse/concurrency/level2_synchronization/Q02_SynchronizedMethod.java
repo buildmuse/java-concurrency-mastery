@@ -22,7 +22,7 @@ public class Q02_SynchronizedMethod {
         private int count = 0;
         
         // TODO: Add synchronized keyword to make it thread-safe
-        public void increment() {
+        public synchronized void increment() {
             count++;
         }
         

@@ -35,27 +35,27 @@ public class Q03_ThreadCommunication {
         // TODO: Implement sendData - Thread-1 sends data to Thread-2
         public synchronized void sendData(String data) throws InterruptedException {
             // Wait if previous data not consumed yet
-            
+            while(dataAvailable) wait();
             
             this.data = data;
             this.dataAvailable = true;
             System.out.println(Thread.currentThread().getName() + ": Sending data: " + data);
             
             // Notify Thread-2 that data is available
-            
+            notifyAll();
         }
         
         // TODO: Implement receiveData - Thread-2 receives data from Thread-1
         public synchronized String receiveData() throws InterruptedException {
             // Wait until data is available
-            
+            while(!dataAvailable) wait();
             
             String receivedData = this.data;
             this.dataAvailable = false;
             System.out.println(Thread.currentThread().getName() + ": Received: " + receivedData);
             
             // Notify that data was consumed
-            
+            notifyAll();
             
             return receivedData;
         }
@@ -63,27 +63,27 @@ public class Q03_ThreadCommunication {
         // TODO: Implement sendResponse - Thread-2 sends response to Thread-1
         public synchronized void sendResponse(String response) throws InterruptedException {
             // Wait if previous response not consumed yet
-            
+            while(responseAvailable) wait();
             
             this.response = response;
             this.responseAvailable = true;
             System.out.println(Thread.currentThread().getName() + ": Sending response: " + response);
             
             // Notify Thread-1 that response is available
-            
+            notifyAll();
         }
         
         // TODO: Implement receiveResponse - Thread-1 receives response from Thread-2
         public synchronized String receiveResponse() throws InterruptedException {
             // Wait until response is available
-            
+            while (!responseAvailable) wait();
             
             String receivedResponse = this.response;
             this.responseAvailable = false;
             System.out.println(Thread.currentThread().getName() + ": Received response: " + receivedResponse);
             
             // Notify that response was consumed
-            
+            notifyAll();
             
             return receivedResponse;
         }

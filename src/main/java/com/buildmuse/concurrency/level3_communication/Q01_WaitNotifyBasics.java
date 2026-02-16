@@ -27,12 +27,13 @@ public class Q01_WaitNotifyBasics {
         Thread thread1 = new Thread(() -> {
             synchronized (lock) {
                 System.out.println("Thread-1: Waiting for signal...");
-//                try {
-//                    // TODO: Call wait() on lock object
-//
-//                } catch (InterruptedException e) {
-//                    Thread.currentThread().interrupt();
-//                }
+                try {
+                    // TODO: Call wait() on lock object
+                    lock.wait();
+
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
                 System.out.println("Thread-1: Received signal, proceeding");
             }
         }, "Thread-1");
@@ -48,6 +49,7 @@ public class Q01_WaitNotifyBasics {
                 System.out.println("Thread-2: Working...");
                 System.out.println("Thread-2: Sending signal");
                 // TODO: Call notify() on lock object
+                lock.notify();
                 
             }
         }, "Thread-2");

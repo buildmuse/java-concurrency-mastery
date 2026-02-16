@@ -36,25 +36,30 @@ public class Q02_ProducerConsumer {
         public synchronized void produce(int item) throws InterruptedException {
             // TODO: Wait while queue is full
             // Use while loop: while (queue.size() == capacity) { wait(); }
-            
+
+            while(queue.size() == capacity) {
+                wait();
+            }
             
             queue.add(item);
             System.out.println("Producer: Produced " + item + ", Queue size: " + queue.size());
             
             // TODO: Notify waiting consumers
-            
+            notifyAll();
         }
         
         public synchronized int consume() throws InterruptedException {
             // TODO: Wait while queue is empty
             // Use while loop: while (queue.isEmpty()) { wait(); }
-            
+            while(queue.isEmpty()) {
+                wait();
+            }
             
             int item = queue.poll();
             System.out.println("Consumer: Consumed " + item + ", Queue size: " + queue.size());
             
             // TODO: Notify waiting producers
-            
+            notifyAll();
             
             return item;
         }

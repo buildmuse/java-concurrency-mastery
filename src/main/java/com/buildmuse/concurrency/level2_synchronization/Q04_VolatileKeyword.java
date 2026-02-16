@@ -23,7 +23,7 @@ package com.buildmuse.concurrency.level2_synchronization;
 public class Q04_VolatileKeyword {
     
     // TODO: Add volatile keyword to ensure visibility
-    private static boolean running = true;
+    private static volatile boolean running = true;
     
     public static void main(String[] args) throws InterruptedException {
         

@@ -28,7 +28,7 @@ public class Q01_RaceCondition {
         // TODO: Implement increment (DO NOT synchronize yet)
         public void increment() {
             // This is NOT atomic!
-            
+            ++count;
         }
         
         public int getCount() {
@@ -42,18 +42,29 @@ public class Q01_RaceCondition {
         // TODO: Create 2 threads, each calling counter.increment() 1000 times
         Thread t1 = new Thread(() -> {
             // TODO: Loop 1000 times, call increment()
+            int i = 1;
+            while(i <= 1000) {
+                counter.increment();
+                i++;
+            }
             
             System.out.println("Thread-1 completed 1000 increments");
         });
         
         Thread t2 = new Thread(() -> {
             // TODO: Loop 1000 times, call increment()
+            int i = 1;
+            while(i <= 1000) {
+                counter.increment();
+                i++;
+            }
             
             System.out.println("Thread-2 completed 1000 increments");
         });
         
         // TODO: Start threads and wait for completion
-        
+        t1.start();
+        t2.start();
         
         
         // TODO: Print results

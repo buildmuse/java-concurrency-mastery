@@ -34,17 +34,17 @@ public class Q04_PrintSequence {
         public void printNumber(int number) throws InterruptedException {
             synchronized (lock) {
                 // TODO: Wait while it's not this thread's turn
-                // while (currentNumber != number) { wait(); }
+                 while (currentNumber != number) { lock.wait(); }
                 
                 
                 System.out.println(number);
                 
                 // TODO: Update currentNumber for next thread
-                // currentNumber = (currentNumber % maxNumber) + 1
+                 currentNumber = (currentNumber % maxNumber) + 1;
                 
                 
                 // TODO: Notify all waiting threads
-                
+                lock.notifyAll();
             }
         }
     }
@@ -56,21 +56,53 @@ public class Q04_PrintSequence {
         // TODO: Create 3 threads, each calling printNumber() 5 times
         Thread t1 = new Thread(() -> {
             // TODO: Loop 5 times, call printer.printNumber(1)
+            try {
+                for(int i = 0; i < 5; i++) {
+                    printer.printNumber(1);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             
         }, "Thread-1");
         
         Thread t2 = new Thread(() -> {
             // TODO: Loop 5 times, call printer.printNumber(2)
+            try {
+                for(int i = 0; i < 5; i++) {
+                    printer.printNumber(2);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             
         }, "Thread-2");
         
         Thread t3 = new Thread(() -> {
             // TODO: Loop 5 times, call printer.printNumber(3)
+            try {
+                for(int i = 0; i < 5; i++) {
+                    printer.printNumber(3);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             
         }, "Thread-3");
         
         // TODO: Start all threads and wait for completion
-        
+        t1.start();
+        t2.start();
+        t3.start();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
     }
 }
 

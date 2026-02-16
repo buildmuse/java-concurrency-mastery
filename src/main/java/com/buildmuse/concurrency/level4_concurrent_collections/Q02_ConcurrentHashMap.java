@@ -25,7 +25,7 @@ public class Q02_ConcurrentHashMap {
     
     static class Cache {
         // TODO: Create ConcurrentHashMap
-        private final ConcurrentHashMap<String, String> cache = null;
+        private final ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<>();
         
         // Simulate expensive computation
         private String computeValue(String key) {
@@ -41,8 +41,8 @@ public class Q02_ConcurrentHashMap {
         // TODO: Implement get with computeIfAbsent
         public String get(String key) {
             // Use computeIfAbsent - only computes if key absent (atomic operation)
-            
-            return null;
+
+            return cache.computeIfAbsent(key, (k) -> computeValue(k));
         }
     }
     

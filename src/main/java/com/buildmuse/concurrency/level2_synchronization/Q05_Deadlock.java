@@ -51,7 +51,21 @@ public class Q05_Deadlock {
         // Acquire lock2, then lock1 (OPPOSITE ORDER - causes deadlock!)
         Thread thread2 = new Thread(() -> {
             // TODO: First acquire lock2, then lock1
-            
+
+            synchronized (lock1) {
+                System.out.println("Thread-2: Acquired lock1");
+
+                try{
+                   Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+
+                System.out.println("Thread-2: Waiting for lock2...");
+                synchronized (lock2) {
+                    System.out.println("Thread-2: Acquired lock2");
+                }
+            }
         }, "Thread-2");
         
         thread1.start();

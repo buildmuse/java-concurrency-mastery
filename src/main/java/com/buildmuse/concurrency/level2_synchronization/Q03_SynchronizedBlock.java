@@ -45,9 +45,11 @@ public class Q03_SynchronizedBlock {
             }
             
             // TODO: Synchronized block here
-            
+
+            synchronized (lock) {
                 balance += amount;
-            
+            }
+
         }
         
         public void withdraw(int amount) {
@@ -62,9 +64,9 @@ public class Q03_SynchronizedBlock {
             }
             
             // TODO: Synchronized block here
-            
+            synchronized (lock) {
                 balance -= amount;
-            
+            }
         }
         
         public int getBalance() {
@@ -80,12 +82,21 @@ public class Q03_SynchronizedBlock {
         
         // TODO: Create thread that deposits 50, 10 times
         Thread depositor = new Thread(() -> {
-            
+            int i = 0;
+
+            while(i <= 10) {
+                account.deposit(50);
+                i++;
+            }
         }, "Thread-1");
         
         // TODO: Create thread that withdraws 30, 10 times
         Thread withdrawer = new Thread(() -> {
-            
+            int i = 0;
+            while(i <= 10) {
+                account.withdraw(30);
+                i++;
+            }
         }, "Thread-2");
         
         depositor.start();
