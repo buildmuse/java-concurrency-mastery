@@ -1,5 +1,6 @@
 package com.buildmuse.concurrency.level4_concurrent_collections;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.List;
@@ -43,17 +44,15 @@ public class Q04_ConcurrentHashMapAdvanced {
         // Expected: java=6, thread=4, lock=3, atomic=2, concurrent=2
 
         Thread[] threads = new Thread[3];
-        for (int i = 0; i < 3; i++) {
+
+        for(int i = 0; i < threadWords.length; i++) {
             final String[] words = threadWords[i];
             threads[i] = new Thread(() -> {
-                for (String word : words) {
-                    // TODO: Use merge() to increment count for each word
-                    // Hint: wordCount.merge(word, 1, Integer::sum)
-                    // merge(key, value, remappingFunction):
-                    //   if key absent → put(key, value)
-                    //   if key present → put(key, remappingFunction(oldValue, value))
+                for(String s : words) {
+                    wordCount.merge(s, 1, Integer::sum);
                 }
             });
+
             threads[i].start();
         }
 
@@ -82,7 +81,7 @@ public class Q04_ConcurrentHashMapAdvanced {
 
             // TODO: Use replace(key, oldValue, newValue)
             // Only withdraw if balance is still what we read
-            boolean success = false; // TODO: accounts.replace("alice", current, current - 200)
+            boolean success = accounts.replace("alice", current, current-200); // TODO: accounts.replace("alice", current, current - 200)
             System.out.println("T1 withdraw 200: " + (success ? "SUCCESS" : "FAILED (balance changed!)"));
         }, "T1");
 
@@ -92,7 +91,7 @@ public class Q04_ConcurrentHashMapAdvanced {
             try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
 
             // TODO: Use replace(key, oldValue, newValue)
-            boolean success = false; // TODO: accounts.replace("alice", current, current - 300)
+            boolean success = accounts.replace("alice", current, current-300 );
             System.out.println("T2 withdraw 300: " + (success ? "SUCCESS" : "FAILED (balance changed!)"));
         }, "T2");
 
@@ -117,11 +116,16 @@ public class Q04_ConcurrentHashMapAdvanced {
 
         Thread t1 = new Thread(() -> {
             // TODO: Use computeIfAbsent to get/create the list, then add to it
-            // Hint: userTags.computeIfAbsent("alice", k -> new CopyOnWriteArrayList<>()).add("admin");
+            userTags.computeIfAbsent("alice", (k) -> new CopyOnWriteArrayList<>()).add("admin");
+            userTags.computeIfAbsent("alice", k -> new CopyOnWriteArrayList<>()).add("active");
+            userTags.computeIfAbsent("bob", k -> new CopyOnWriteArrayList<>()).add("user");
             // Add tags: alice→"admin", alice→"active", bob→"user"
         }, "T1");
 
         Thread t2 = new Thread(() -> {
+            userTags.computeIfAbsent("alice", k -> new CopyOnWriteArrayList<>()).add("premium");
+            userTags.computeIfAbsent("bob", k -> new CopyOnWriteArrayList<>()).add("active");
+            userTags.computeIfAbsent("bob", k -> new CopyOnWriteArrayList<>()).add("premium");
             // TODO: Add tags: alice→"premium", bob→"active", bob→"premium"
         }, "T2");
 
@@ -150,20 +154,21 @@ public class Q04_ConcurrentHashMapAdvanced {
         // TODO 1: Use forEach to print all entries
         // Hint: scores.forEach(1, (name, score) -> System.out.println(name + ": " + score));
         System.out.println("All scores:");
+        scores.forEach(1, (name, score) -> System.out.println(name + " " + score));
 
         // TODO 2: Use search to find the first student with score > 90
         // Hint: scores.search(1, (name, score) -> score > 90 ? name : null);
-        String topStudent = null; // TODO
+        String topStudent = scores.search(1, (name, score) -> score > 90 ? name : null); // TODO
         System.out.println("A student with score > 90: " + topStudent);
 
         // TODO 3: Use reduce to find the total score
         // Hint: scores.reduce(1, (name, score) -> score, Integer::sum);
-        Integer totalScore = null; // TODO
+        Integer totalScore = scores.reduce(1, (name, score) -> score, Integer::sum); // TODO
         System.out.println("Total score: " + totalScore);
 
         // TODO 4: Use reduceValues to find the max score
         // Hint: scores.reduceValues(1, Integer::max);
-        Integer maxScore = null; // TODO
+        Integer maxScore = scores.reduceValues(1,Integer::max); // TODO
         System.out.println("Max score: " + maxScore);
     }
 
