@@ -30,20 +30,20 @@ public class Q03_AtomicOperations {
     // This counter has a race condition. Fix it using AtomicInteger.
     // Do NOT use synchronized.
 
-    static int unsafeCounter = 0; // TODO: Replace with AtomicInteger
+    static AtomicInteger unsafeCounter = null;
 
     static void exercise1_fixRaceCondition() throws InterruptedException {
         // TODO: Reset counter to 0
-
+        unsafeCounter = new AtomicInteger(0);
         Thread t1 = new Thread(() -> {
             for (int i = 0; i < 10000; i++) {
-                unsafeCounter++; // TODO: Use atomic increment
+                unsafeCounter.incrementAndGet(); // TODO: Use atomic increment
             }
         });
 
         Thread t2 = new Thread(() -> {
             for (int i = 0; i < 10000; i++) {
-                unsafeCounter++; // TODO: Use atomic increment
+                unsafeCounter.incrementAndGet(); // TODO: Use atomic increment
             }
         });
 
@@ -52,7 +52,7 @@ public class Q03_AtomicOperations {
         t1.join();
         t2.join();
 
-        System.out.println("Counter (should be 20000): " + unsafeCounter);
+        System.out.println("Counter (should be 20000): " + unsafeCounter.get());
         // TODO: use .get() to print
     }
 
@@ -67,15 +67,18 @@ public class Q03_AtomicOperations {
 
     static void exercise2_pageViewCounter() throws InterruptedException {
         // TODO: Initialize both counters to 0
-
+        pageViews = new AtomicLong(0);
+        apiCalls = new AtomicLong(0);
         // Simulate 5 threads hitting the website
         Thread[] threads = new Thread[5];
         for (int i = 0; i < 5; i++) {
             threads[i] = new Thread(() -> {
                 for (int j = 0; j < 1000; j++) {
                     // TODO: Increment pageViews
+                    pageViews.incrementAndGet();
                     if (j % 3 == 0) {
                         // TODO: Increment apiCalls (every 3rd request makes an API call)
+                        apiCalls.incrementAndGet();
                     }
                 }
             });
@@ -87,8 +90,8 @@ public class Q03_AtomicOperations {
         }
 
         // TODO: Print pageViews (should be 5000) and apiCalls (should be 1670)
-        System.out.println("Page views: " + pageViews);
-        System.out.println("API calls: " + apiCalls);
+        System.out.println("Page views: " + pageViews.get());
+        System.out.println("API calls: " + apiCalls.get());
     }
 
     // =============================================
@@ -101,19 +104,19 @@ public class Q03_AtomicOperations {
 
     static void exercise3_atomicReference() throws InterruptedException {
         // TODO: Initialize connectionState to "DISCONNECTED"
-
+        connectionState = new AtomicReference<>("DISCONNECTED");
         // Thread 1: tries to connect
         Thread connector = new Thread(() -> {
             // TODO: Use compareAndSet to transition DISCONNECTED → CONNECTING
             // Only transition if current state is DISCONNECTED
             // Print success or failure
-            boolean success = false; // TODO: compareAndSet("DISCONNECTED", "CONNECTING")
+            boolean success = connectionState.compareAndSet("DISCONNECTED", "CONNECTING");// TODO: compareAndSet("DISCONNECTED", "CONNECTING")
             System.out.println("Connector: DISCONNECTED → CONNECTING: " + success);
 
             try { Thread.sleep(500); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
 
             // TODO: Use compareAndSet to transition CONNECTING → CONNECTED
-            success = false; // TODO: compareAndSet("CONNECTING", "CONNECTED")
+            success = connectionState.compareAndSet("CONNECTING", "CONNECTED"); // TODO: compareAndSet("CONNECTING", "CONNECTED")
             System.out.println("Connector: CONNECTING → CONNECTED: " + success);
         }, "Connector");
 
@@ -122,7 +125,7 @@ public class Q03_AtomicOperations {
             try { Thread.sleep(100); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
 
             // TODO: Use compareAndSet — this should FAIL because state is already CONNECTING
-            boolean success = false; // TODO: compareAndSet("DISCONNECTED", "CONNECTING")
+            boolean success = connectionState.compareAndSet("DISCONNECTED", "CONNECTING"); // TODO: compareAndSet("DISCONNECTED", "CONNECTING")
             System.out.println("Connector2: DISCONNECTED → CONNECTING: " + success + " (expected false)");
         }, "Connector2");
 
@@ -140,10 +143,11 @@ public class Q03_AtomicOperations {
     // Use getAndUpdate to implement a thread-safe "max tracker"
     // Multiple threads report values, track the maximum seen.
 
-    static AtomicInteger maxValue = null; // TODO: Initialize with Integer.MIN_VALUE
+    static AtomicInteger maxValue = null;// TODO: Initialize with Integer.MIN_VALUE
 
     static void exercise4_maxTracker() throws InterruptedException {
         // TODO: Initialize maxValue to Integer.MIN_VALUE
+        maxValue = new AtomicInteger(Integer.MIN_VALUE);
 
         int[][] threadValues = {
             {3, 7, 1, 9, 2},
@@ -156,6 +160,7 @@ public class Q03_AtomicOperations {
             final int[] values = threadValues[i];
             threads[i] = new Thread(() -> {
                 for (int val : values) {
+                    maxValue.updateAndGet(current -> Math.max(current, val));
                     // TODO: Use updateAndGet to atomically update max
                     // Hint: maxValue.updateAndGet(current -> Math.max(current, val));
                 }
