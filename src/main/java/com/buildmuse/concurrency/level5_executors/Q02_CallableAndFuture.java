@@ -41,17 +41,21 @@ public class Q02_CallableAndFuture {
             System.out.println("Submitting task " + taskId);
             
             // TODO: Create Callable that returns taskId * 2
-            Callable<Integer> task = null;
+            Callable<Integer> task = () -> {
+                Thread.sleep(1000);
+                return taskId * 2;
+            };
             
             // TODO: Submit and store Future
-            
+            Future<Integer> future = executor.submit(task);
+            futures.add(future);
         }
         
         // TODO: Collect results from Futures
         for (int i = 0; i < futures.size(); i++) {
             // TODO: Use future.get() to retrieve result (blocks if not ready)
-            
-            System.out.println("Result from task " + (i + 1) + ": " + "TODO" /* result */ );
+
+            System.out.println("Result from task " + (i + 1) + ": " + futures.get(i).get() );
         }
         
         executor.shutdown();

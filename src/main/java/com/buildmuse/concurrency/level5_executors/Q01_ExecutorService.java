@@ -30,22 +30,25 @@ public class Q01_ExecutorService {
     public static void main(String[] args) throws InterruptedException {
         
         // TODO: Create ExecutorService with fixed thread pool of 3
-        ExecutorService executor = null;
+        ExecutorService executor = Executors.newCachedThreadPool(3);
         
         // TODO: Submit 10 tasks
         for (int i = 1; i <= 10; i++) {
             final int taskId = i;
             // TODO: Use executor.submit() or executor.execute()
+            executor.submit(() -> {
+                executeTask(taskId);
+            });
             
         }
         
         // TODO: Shutdown executor
         // Use shutdown() - doesn't accept new tasks but completes existing ones
-        
+        executor.shutdown();
         
         // TODO: Wait for all tasks to complete
         // Use awaitTermination(timeout, unit)
-        
+        executor.awaitTermination(1, TimeUnit.MINUTES);
         
         System.out.println("All tasks completed");
     }
